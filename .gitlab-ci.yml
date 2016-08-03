@@ -1,0 +1,23 @@
+image: docker:git
+services:
+- docker:dind
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+
+
+clone_dind:
+  script:
+    - docker pull docker:dind
+    - docker tag docker:dind registry.gitlab.com/gbraad/docker:dind
+    - docker push registry.gitlab.com/gbraad/docker:dind
+  only:
+    - master
+
+clone_git:
+  script:
+    - docker pull docker:git
+    - docker tag docker:git registry.gitlab.com/gbraad/docker:git
+    - docker push registry.gitlab.com/gbraad/docker:git
+  only:
+    - master
